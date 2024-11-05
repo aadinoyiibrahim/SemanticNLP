@@ -1,3 +1,7 @@
+"""
+This module contains functions to plot data.
+"""
+
 import matplotlib.pyplot as plt
 
 

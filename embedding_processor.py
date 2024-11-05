@@ -1,5 +1,8 @@
 """
- 
+ contains the EmbeddingProcessor class that 
+ processes the embeddings for the papers and 
+ compute the similarity between the papers and the keywords. 
+ It also classifies the papers into relevant methods.
 """
 
 import pandas as pd
@@ -16,7 +19,7 @@ import nltk
 nltk.download("all")
 
 
-class EmbeddingProcessor:
+class EmbeddingProcessor: 
     def __init__(self, data_path):
         # Load the dataset
         self.df = pd.read_csv(data_path)
@@ -29,7 +32,7 @@ class EmbeddingProcessor:
         self.lemmatizer = WordNetLemmatizer()
         self.en_stopwords = set(stopwords.words("english"))
 
-        # Define keyword variations
+        # keyword variations
         self.keyword_variations = {
             "deep learning": [
                 "deep learning",
@@ -83,7 +86,13 @@ class EmbeddingProcessor:
         }
 
     def lemmatize_text(self, text):
-        # Remove non-alphabetic characters and lower the case
+        """
+        Lemmatize the text and remove stopwords
+
+        param   text: input text to lemmatize
+
+        return: lemmatized text
+        """
         text = re.sub(r"[^A-Za-z1-9 ]", "", text)
         text = text.lower()
         tokens = word_tokenize(text)
@@ -95,6 +104,11 @@ class EmbeddingProcessor:
         return " ".join(clean_text)
 
     def process_embeddings(self):
+        """
+        Process the embeddings for the papers and calculate the similarity
+        between the papers and the keywords
+
+        """
         # Prepare the 'titleAbstractNew' column
         self.df_cleaned["titleAbstractNew"] = (
             self.df_cleaned["Title"] + " " + self.df_cleaned["Abstract"]
@@ -103,12 +117,12 @@ class EmbeddingProcessor:
             self.lemmatize_text
         )
 
-        # Generate embeddings using the helper method
+        # Generate embeddings
         self.df_cleaned["titleAbstractNew_Embedding"] = self.df_cleaned[
             "titleAbstractNew"
         ].apply(self.embedding_helper.get_embedding)
 
-        # Convert the list of embeddings into a 2D NumPy array
+        # Convert embeddings into a 2D NumPy array
         embeddings_matrix = np.vstack(
             self.df_cleaned["titleAbstractNew_Embedding"].values
         )
@@ -128,7 +142,15 @@ class EmbeddingProcessor:
         return self.df_cleaned
 
     def calculate_weighted_similarity(self, embeddings, query_vector):
-        # Calculate cosine similarity
+        """
+        Calculate the cosine similarity between the embeddings and the query vector
+        param
+            embeddings: 2D NumPy array of embeddings
+            query_vector: 2D NumPy array of the query vector
+
+        return: 1D NumPy array of weighted similarities
+        """
+
         similarities = cosine_similarity(embeddings, query_vector)
 
         # Apply penalty for papers that do not contain relevant keywords
@@ -141,13 +163,21 @@ class EmbeddingProcessor:
         return similarities
 
     def classify_paper(self, text):
+        """
+        Classify the paper based on the keywords present in the text
+        param
+            text: input text to classify
+        return: method type
+        """
         for method, keywords in self.keyword_variations.items():
             if any(keyword in text for keyword in keywords):
                 return method  # Return the first matching method
         return "Others"  # If no keywords match
 
     def classify_relevant_methods(self):
-        # Apply classification function to each paper
+        """
+        Classify the papers into relevant methods
+        """
         self.df_cleaned["method_type"] = self.df_cleaned["titleAbstractNew"].apply(
             self.classify_paper
         )
@@ -159,6 +189,11 @@ class EmbeddingProcessor:
         )
 
     def classify_method(self, text):
+        """
+        Classify the method based on the keywords present in the text
+        param   text: input text to classify
+        return: method type
+        """
         normalized_text = self.embedding_helper.normalize_text(
             text, self.keyword_variations
         )
@@ -181,6 +216,9 @@ class EmbeddingProcessor:
             return "other"
 
     def classify_relevant_methods(self):
+        """
+        Classify the papers into relevant methods
+        """
         self.df_cleaned["method_group"] = self.df_cleaned["titleAbstractNew"].apply(
             self.classify_method
         )
@@ -217,19 +255,12 @@ class EmbeddingProcessor:
         plt.show()
 
 
-# Example usage
 if __name__ == "__main__":
-    # Provide the path to your CSV file here
-    data_path = "data.csv"  # Adjust the path as needed
+    
+    # data_path = "data.csv"  
 
     # Initialize the EmbeddingProcessor with the data path
-    embedding_processor = EmbeddingProcessor(data_path)
+    # embedding_processor = EmbeddingProcessor(data_path)
 
     # Process embeddings and get results
-    results = embedding_processor.process_embeddings()
-
-    # Display results
-    print(results.head(10))
-
-    # Plot the distribution of methods
-    embedding_processor.plot_method_distribution()
+    # results = embedding_processor.process_embeddings()
