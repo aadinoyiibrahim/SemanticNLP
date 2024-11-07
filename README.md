@@ -3,7 +3,7 @@
 The aim of this task is to filter and classify academic papers from a dataset created through a keyword-based search on PubMed. The dataset is provided in CSV format and contains 11,450 records. The specific goal is to identify papers that implement deep learning neural network-based solutions in the fields of virology and epidemiology.
 
 ## Table of Contents 
-- [Semantic NLP Filtering for Deep Learning Papers in Virology/Epidemiology](#semantic-nlp-filtering-for-deep-learning-papers-in-virology-epidemiology)
+- [Semantic NLP Filtering for Deep Learning Papers in Virology or Epidemiology](#semantic-nlp-filtering-for-deep-learning-papers-in-virology-or-epidemiology)
 - [Table of Contents](#table-of-contents)
 - [What's included](#whats-included)
 - [Approach](#approach)
