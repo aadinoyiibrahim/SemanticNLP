@@ -18,6 +18,7 @@ The aim of this task is to filter and classify academic papers from a dataset cr
 ## What's included
 
 This repo is structured as follow:
+
 /semannticNLP
     ├── example.ipynb  
     ├── embedding_processor.py  
