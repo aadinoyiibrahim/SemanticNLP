@@ -31,7 +31,7 @@ This repo is structured as follow:
 
 - ```example.ipynb```: tutorial notebook with a basic usage of the code.
 - ```embedding_processor.py```: contains the EmbeddingProcessor class that processes the embeddings for the papers and 
- compute the similarity between the papers and the keywords. It also classifies the papers into relevant methods.
+ compute the cosine similarity between the papers and the keywords. It also classifies the papers into relevant methods.
 - ```methods.py```: contains the methods to get the embeddings of the text and check if the text contains the keywords.
 - ```plotter.py```: contains function to generate plot.
 - ```img/```: folder containing all plots used for the README.md.
@@ -66,13 +66,13 @@ python setup.py
 To download this repository, copy and paste the following line in your terminal:
 
 ```bash
-git clone https://github.com/***
+git clone https://github.com/aadinoyiibrahim/SemanticNLP
 ```
 Now you're ready to use this code. If you want to know how, see example.ipynb notebook for usage example.
 
 ## Results
 
-- This approach shows that there are 57% of the papers are deemed relevant based on the keywords and approach used. 
+- This approach shows that 57% of the papers are deemed relevant based on the keywords and the nlp approach used. 
 - The majority of relevant papers are classified as "Other" and the combined category of "Both" represent a least fraction. This could imply that the research landscape is primarily oriented towards others (such as deep learning), with fewer studies integrating visual data analysis. 
 
 <p align="center">
@@ -82,7 +82,7 @@ Now you're ready to use this code. If you want to know how, see example.ipynb no
 <img src ="./img/classification.png"><br>
 </p>
 
-- Next, we extract and report the name of the method used for each relevant paper. This plot shows a clear preference for deep learning methodologies in the research landscape, followed by natural language processing. The lesser representation of computer vision and large language models suggests either a niche application of these methods or that the current research focus remains primarily on deep learning and NLP techniques.
+- Next, we extract and report the name of the method used for each relevant paper. This plot shows a clear preference for deep learning methodologies in the research landscape, followed by natural language processing. The lesser representation of computer vision and large language models suggests either a niche application of these methods or that the current research focus remains primarily on deep learning and NLP techniques. Note that there are multiple algorithms used and for easy visual representation, I group the methods into [dee learning, natural language processing, computer vision, large language model].
 
 Note: for keywords that uses both 'deep learning' and 'computer vision', the algorithm use the first keyword to classify.
 <p align="center">
@@ -91,5 +91,5 @@ Note: for keywords that uses both 'deep learning' and 'computer vision', the alg
 
 ## Contact
 
-For any issues or questions, feel free to contact us: [Abdullahi Adinoyi Ibrahim](https://github.com/aadinoyiibrahim)
+For any issues or questions, feel free to contact: [Abdullahi Adinoyi Ibrahim](https://github.com/aadinoyiibrahim)
 
