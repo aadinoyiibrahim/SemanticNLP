@@ -19,7 +19,7 @@ import nltk
 nltk.download("all")
 
 
-class EmbeddingProcessor: 
+class EmbeddingProcessor:
     def __init__(self, data_path):
         # Load the dataset
         self.df = pd.read_csv(data_path)
@@ -36,6 +36,7 @@ class EmbeddingProcessor:
         self.keyword_variations = {
             "deep learning": [
                 "deep learning",
+                "deeplearning",
                 "deep neural networks",
                 "neural network",
                 "artificial neural network",
@@ -48,7 +49,7 @@ class EmbeddingProcessor:
                 "rnn",
                 "long short-term memory network",
                 "lstm",
-                "transformer",
+                # "transformer",
                 "transformer models",
                 "transformer-based model",
                 "self-attention models",
@@ -256,11 +257,7 @@ class EmbeddingProcessor:
 
 
 if __name__ == "__main__":
-    
-    # data_path = "data.csv"  
 
-    # Initialize the EmbeddingProcessor with the data path
-    # embedding_processor = EmbeddingProcessor(data_path)
+    data_path = "data.csv"
 
-    # Process embeddings and get results
-    # results = embedding_processor.process_embeddings()
+    embedding_processor = EmbeddingProcessor(data_path)
