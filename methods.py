@@ -13,9 +13,7 @@ class EmbeddingHelper:
         # Load the DistilBERT tokenizer and model
         self.tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
         self.model = DistilBertModel.from_pretrained("distilbert-base-uncased")
-        self.device = torch.device(
-            "cuda:0" if torch.cuda.is_available() else "cpu"
-        )  # Check for GPU
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)  # Move model to GPU if available
 
     def normalize_text(self, text, keyword_variations):
@@ -29,7 +27,7 @@ class EmbeddingHelper:
 
         return: normalized text
         """
-        text = text.lower()  # to lowercase
+        text = text.lower()
         for standard, variations in keyword_variations.items():
             for variation in variations:
                 text = re.sub(r"\b" + re.escape(variation) + r"\b", standard, text)
@@ -49,7 +47,6 @@ class EmbeddingHelper:
         with torch.no_grad():
             outputs = self.model(**inputs)
 
-        # Get the embeddings (mean pooling)
         embeddings = outputs.last_hidden_state.mean(dim=1)
         return embeddings.cpu().numpy()
 

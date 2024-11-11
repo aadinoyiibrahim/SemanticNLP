@@ -68,7 +68,7 @@ To download this repository, copy and paste the following line in your terminal:
 ```bash
 git clone https://github.com/aadinoyiibrahim/SemanticNLP
 ```
-Now you're ready to use this code. If you want to know how, see example.ipynb notebook for usage example.
+Now you're ready to use this code. If you want to know how, see example.ipynb notebook for usage example. 
 
 ## Results
 

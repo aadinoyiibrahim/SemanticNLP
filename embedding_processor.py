@@ -24,12 +24,9 @@ class EmbeddingProcessor:
         # Load the dataset
         self.df = pd.read_csv(data_path)
         self.df_cleaned = self.df.dropna(subset=["Abstract"])
+        self.embedding_helper = EmbeddingHelper()  # Initialize
 
-        # Initialize the embedding helper
-        self.embedding_helper = EmbeddingHelper()
-
-        # Initialize the lemmatizer and stopwords
-        self.lemmatizer = WordNetLemmatizer()
+        self.lemmatizer = WordNetLemmatizer()  # Initialize
         self.en_stopwords = set(stopwords.words("english"))
 
         # keyword variations
@@ -110,7 +107,7 @@ class EmbeddingProcessor:
         between the papers and the keywords
 
         """
-        # Prepare the 'titleAbstractNew' column
+
         self.df_cleaned["titleAbstractNew"] = (
             self.df_cleaned["Title"] + " " + self.df_cleaned["Abstract"]
         )
@@ -118,7 +115,6 @@ class EmbeddingProcessor:
             self.lemmatize_text
         )
 
-        # Generate embeddings
         self.df_cleaned["titleAbstractNew_Embedding"] = self.df_cleaned[
             "titleAbstractNew"
         ].apply(self.embedding_helper.get_embedding)
@@ -128,12 +124,10 @@ class EmbeddingProcessor:
             self.df_cleaned["titleAbstractNew_Embedding"].values
         )
 
-        # Create a query vector from the keywords and ensure it's 2D
         query_vector = self.embedding_helper.get_embedding(
             " ".join(self.keyword_variations.keys())
         ).reshape(1, -1)
 
-        # Calculate weighted cosine similarity
         weighted_similarities = self.calculate_weighted_similarity(
             embeddings_matrix, query_vector
         )
@@ -154,13 +148,12 @@ class EmbeddingProcessor:
 
         similarities = cosine_similarity(embeddings, query_vector)
 
-        # Apply penalty for papers that do not contain relevant keywords
         for i in range(similarities.shape[0]):
             paper_text = self.df_cleaned["titleAbstractNew"].iloc[i]
             if not self.embedding_helper.contains_keywords(
                 paper_text, self.keyword_variations
             ):
-                similarities[i] *= 0.1  # Apply a penalty for irrelevant papers
+                similarities[i] *= 0.1  # penalize
         return similarities
 
     def classify_paper(self, text):
@@ -173,7 +166,7 @@ class EmbeddingProcessor:
         for method, keywords in self.keyword_variations.items():
             if any(keyword in text for keyword in keywords):
                 return method  # Return the first matching method
-        return "Others"  # If no keywords match
+        return "Others"
 
     def classify_relevant_methods(self):
         """
